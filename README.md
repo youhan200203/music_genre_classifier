@@ -17,7 +17,7 @@ PyTorch로 4개의 residual block을 가지는 ResNet을 직접 구현하여 실
   - Soft voting aggregation
 
 ## Result
-!(images/result.png)
+![web preview](images/preview.png)
 
 - Top-1 Accuracy: 56% \
 -> 512프레임 랜덤크롭이 타 학습 방식에 비해 최대 1.5% 높은 성능을 보였습니다. 
