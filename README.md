@@ -17,10 +17,12 @@ PyTorch로 4개의 residual block을 가지는 ResNet을 직접 구현하여 실
   - Soft voting aggregation
 
 ## Result
-- Top-1 Accuracy: 56%
+!(images/result.png)
+
+- Top-1 Accuracy: 56% \
 -> 512프레임 랜덤크롭이 타 학습 방식에 비해 최대 1.5% 높은 성능을 보였습니다. 
 
-+ 실제 API에서 예측할 때는 Sliding window와 soft voting을 적용했는데, 단일 구간 기반 Validation이 실제 서비스 환경과 불일치한다는 점을 인지하였고, Evaludation 단계에서도 sliding window + soft voting을 적용해 학습과 추론 전략을 일관되게 맞추어 보다 현실적인 성능 지표를 산출할 수 있었습니다.
++ 실제 API에서 예측할 때는 Sliding window와 soft voting을 적용했는데, 단일 구간 기반 Validation이 실제 서비스 환경과 불일치한다는 점을 인지하였고, Evaludation 단계에서도 sliding window + soft voting을 적용해 학습과 추론 전략을 일관되게 맞추어 보다 현실적인 성능 지표를 산출할 수 있었습니다. \
 -> 3만 개 데이터를 사용했을 때 기존 accuracy 49.12%에 비해 sliding window와 soft voting을 적용했을 때 accuracy가 52.17%로 상승
 
 + 클래스 불균형을 고려하여 Accuracy뿐만 아니라 Macro F1 Score를 함께 보고하면 좋을 것 같습니다.
