@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>음악 장르 분류</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+        .loading {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎵 음악 장르 분류</h1>
+
+<input type="file" id="fileInput" accept=".mp3,.wav">
+<br>
+<button onclick="predict()">예측하기</button>
+
+<div id="status" class="loading"></div>
+<div id="result" class="result"></div>
+
+<script>
+async function predict() {
+    const fileInput = document.getElementById("fileInput");
+    const status = document.getElementById("status");
+    const resultDiv = document.getElementById("result");
+
+    resultDiv.innerHTML = "";
+    status.innerText = "";
+
+    if (fileInput.files.length === 0) {
+        alert("오디오 파일을 선택해주세요.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    status.innerText = "예측 중입니다...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("서버 오류");
+        }
+
+        const data = await response.json();
+
+        status.innerText = "";
+
+        let html = "<h3>결과</h3><ol>";
+        for (const item of data.topk) {
+            html += `<li>${item.genre} : ${(item.prob * 100).toFixed(2)}%</li>`;
+        }
+        html += "</ol>";
+
+        resultDiv.innerHTML = html;
+
+    } catch (err) {
+        status.innerText = "";
+        resultDiv.innerHTML = `<span style="color:red">에러 발생: ${err.message}</span>`;
+    }
+}
+</script>
+
+</body>
+</html>
